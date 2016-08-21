@@ -31,5 +31,3 @@ print(post)
 #替换
 post[0] = '技术产品部'
 print(post)
-
-

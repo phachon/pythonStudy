@@ -1,5 +1,5 @@
 # python 条件语句
-age = input("请输出你的你年龄")
+age = input("请输出你的18你年龄")
 age = int(age)
 if age <= 0:
 	print("年龄输入错误")
