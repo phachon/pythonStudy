@@ -1,6 +1,7 @@
 import mysql.connector
 import sys
 
+
 class TransferMoney(object):
 	def __init__(self, conn):
 		self.conn = conn
@@ -23,7 +24,7 @@ class TransferMoney(object):
 			self.conn.rollback()
 			raise e
 
-	#检查账户是否合法
+	# 检查账户是否合法
 	def checkAccount(self, accountId):
 		cursor = self.conn.cursor()
 
@@ -39,7 +40,7 @@ class TransferMoney(object):
 		finally:
 			cursor.close()
 
-	#检查账户钱是否足够
+	# 检查账户钱是否足够
 	def checkMoney(self, accountId, money):
 
 		cursor = self.conn.cursor()
@@ -54,7 +55,7 @@ class TransferMoney(object):
 		finally:
 			cursor.close()
 
-	#减钱
+	# 减钱
 	def reduceMoney(self, accountId, money):
 
 		cursor = self.conn.cursor()
@@ -68,7 +69,7 @@ class TransferMoney(object):
 		finally:
 			cursor.close()
 
-	#增加钱
+	# 增加钱
 	def addMoney(self, accountId, money):
 
 		cursor = self.conn.cursor()
@@ -88,7 +89,7 @@ if __name__ == '__main__':
 	receiveId = sys.argv[2]
 	money = sys.argv[3]
 
-	#数据库连接
+	# 数据库连接
 	conn = mysql.connector.connect(user='root', password='123456', database='bms_account')
 
 	transferMoney = TransferMoney(conn)
