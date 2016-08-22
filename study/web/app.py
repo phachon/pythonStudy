@@ -23,7 +23,7 @@ def signin():
 	# 从request 对象读取表单内容
 	username = request.form['username']
 	password = request.form['password']
-
+	
 	if(username == 'admin' and password == '111111'):
 		return '<h1>登陆成功</h1>'
 	return '<h1>登陆失败</h1>'
