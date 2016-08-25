@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from article.models import Article
 
 
-def detail(request, my_args):
+def detail(request, id):
 	try:
 		post = Article.objects.get(id=str(id))
 	except Article.DoesNotExist:
