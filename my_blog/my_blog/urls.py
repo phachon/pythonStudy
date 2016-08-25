@@ -8,6 +8,6 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^test/', 'article.views.test'),
-    url(r'^$', 'article.views.home'),
-    url(r'^(?P<my_args>\d+)/$', 'article.views.detail', name='detail'),
+    url(r'^$', 'article.views.home', name='home'),
+    url(r'^(?P<id>\d+)/$', 'article.views.detail', name='detail'),
 )

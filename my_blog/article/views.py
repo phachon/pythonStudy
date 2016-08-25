@@ -1,15 +1,17 @@
 from datetime import datetime
 
+from django.http import Http404
 from django.shortcuts import render
 from django.http import HttpResponse
 from article.models import Article
 
 
 def detail(request, my_args):
-	articles = Article.objects.all()[int(my_args)]
-	str = ("title = %s, categry = %s, content = %s" % (articles.title, articles.category, articles.content))
-
-	return HttpResponse(str)
+	try:
+		post = Article.objects.get(id=str(id))
+	except Article.DoesNotExist:
+		raise Http404
+	return render(request, 'post.html', {'post': post})
 
 
 def test(request):
