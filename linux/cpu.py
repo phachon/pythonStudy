@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/local/python3
 from collections import OrderedDict
 
 
@@ -12,7 +12,7 @@ cpu_info['proc1']={...}
 	processor_info = OrderedDict()
 
 	processor_number = 0
-	with open('/proc/CPUinfo') as f:
+	with open('/proc/cpuinfo') as f:
 		for line in f:
 			if not line.strip():
 				cpuInfo['processor%s' % processor_number] = processor_info
