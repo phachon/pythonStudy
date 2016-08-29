@@ -1,13 +1,12 @@
 #!/usr/local/python3
+"""
+返回 /proc/info 里的 cpu 信息(linux 下)
+"""
 from collections import OrderedDict
 
 
 def cpu_info():
-	''' Return the information in /proc/cpuinfo
-as a dictionary in the following format:
-cpu_info['proc0']={...}
-cpu_info['proc1']={...}
-'''
+
 	cpuInfo = OrderedDict()
 	processor_info = OrderedDict()
 
