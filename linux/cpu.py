@@ -1,16 +1,15 @@
 #!/usr/local/python3
 """
-返回 /proc/info 里的 cpu 信息(linux 下)
+返回 linux 系统的 cpu 信息
 """
 from collections import OrderedDict
 
 
 def cpu_info():
-
 	cpuInfo = OrderedDict()
 	processor_info = OrderedDict()
-
 	processor_number = 0
+
 	with open('/proc/cpuinfo') as f:
 		for line in f:
 			if not line.strip():
@@ -22,7 +21,6 @@ def cpu_info():
 					processor_info[line.split(':')[0].strip()] = line.split(':')[1].strip()
 				else:
 					processor_info[line.split(':')[0].strip()] = ''
-
 	return cpuInfo
 
 if __name__ == '__main__':
