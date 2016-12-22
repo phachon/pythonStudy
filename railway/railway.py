@@ -5,6 +5,7 @@ python 读取excel
 import xlrd
 import xlwt
 import os
+from xlutils.copy import copy
 
 
 def each_file(filePath):
@@ -92,13 +93,17 @@ def recomb_data(runTime, values):
 				#print(trainValues[z])
 				# 站点
 				stationNumber = trainValues[z][0]
-				# 下站时间
-				offTime = trainValues[z][1]
+
 				if stationNumber not in upStationTime.keys():
 					# TODO 记录日志，标出该数据有问题
 					continue
 				# 上车时间
 				upTime = upStationTime[stationNumber]
+				# 下车时间
+				if (z is 3) and (trainValues[z][1] is ''):
+					offTime = upTime
+				else:
+					offTime = trainValues[z][1]
 				# 上车人数
 				upPerson = upStationPerson[stationNumber]
 				# 下车人数
@@ -108,24 +113,39 @@ def recomb_data(runTime, values):
 	return results
 
 
-def write_file(values):
+def write_file(values, file='data.xls', startRow=0):
 	""" 写入整合好的数据到文件 """
 
-	write = xlwt.Workbook()
-	write_sheet = write.add_sheet('data', cell_overwrite_ok=True)
+	old_data = xlrd.open_workbook(file)
+	write = copy(old_data)
+	write_sheet = write.get_sheet(0)
 
 	for i in range(len(values)):
-		write_sheet.write(i + 1, 0, values[i][0])
-		write_sheet.write(i + 1, 1, values[i][1])
-		write_sheet.write(i + 1, 2, values[i][2])
-		write_sheet.write(i + 1, 3, values[i][3])
-		write_sheet.write(i + 1, 4, values[i][4])
-		write_sheet.write(i + 1, 5, values[i][5])
-		write_sheet.write(i + 1, 6, values[i][6])
-	write.save('data.xls')
+		write_sheet.write(startRow + i + 1, 0, values[i][0])
+		write_sheet.write(startRow + i + 1, 1, values[i][1])
+		write_sheet.write(startRow + i + 1, 2, values[i][2])
+		write_sheet.write(startRow + i + 1, 3, values[i][3])
+		write_sheet.write(startRow + i + 1, 4, values[i][4])
+		write_sheet.write(startRow + i + 1, 5, values[i][5])
+		write_sheet.write(startRow + i + 1, 6, values[i][6])
+	write.save(file)
 
 
 if __name__ == '__main__':
-	time, values = analysis_file_data('20150101.xls')
-	results = recomb_data(time, values)
-	write_file(results)
+
+	data_dir = '2015/01'
+	save_file = 'data.xls'
+
+	if not os.path.isfile(save_file):
+		exit('sorry not found '+save_file+' file, please create')
+
+	files = each_file(data_dir)
+	rowCounts = 0
+	for i in range(len(files)):
+		print(files[i])
+		time, values = analysis_file_data(files[i])
+		results = recomb_data(time, values)
+		if i > 0:
+			rowCounts = len(results)
+		write_file(results, save_file, rowCounts)
+
