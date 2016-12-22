@@ -139,13 +139,16 @@ if __name__ == '__main__':
 
 	if not os.path.isfile(save_file):
 		exit('sorry not found '+save_file+' file, please create')
+	print('Start, good luck!\r\n')
 
 	files = each_file(data_dir)
 	for i in range(len(files)):
-		print(files[i])
+		print('reading file ' + files[i] + '....')
 		time, values = analysis_file_data(files[i])
 		results = recomb_data(time, values)
 		if i > 0:
 			rowCounts = len(results)
 		write_file(results, save_file, rowCounts)
+		print('writing finished, total ', len(results))
 
+	print('\r\nEnd, congratulation!')
