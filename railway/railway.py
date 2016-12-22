@@ -135,12 +135,12 @@ if __name__ == '__main__':
 
 	data_dir = '2015/01'
 	save_file = 'data.xls'
+	rowCounts = 0
 
 	if not os.path.isfile(save_file):
 		exit('sorry not found '+save_file+' file, please create')
 
 	files = each_file(data_dir)
-	rowCounts = 0
 	for i in range(len(files)):
 		print(files[i])
 		time, values = analysis_file_data(files[i])
