@@ -58,6 +58,7 @@ def analysis_file_data(file):
 def recomb_data(runTime, values):
 	""" 解析数据重新组合 """
 
+	results = []
 	for i in range(len(values)):
 
 		trainValues = values[i]
@@ -75,11 +76,56 @@ def recomb_data(runTime, values):
 		# 下车时间集合
 		offTimeList = trainValues[2]
 
-		for y in range(len(trainValues)):
-			if y > 0:
-				print(trainValues[y])
-				exit()
+		# 上车站对应时间与上车站对应人数字典
+		upStationTime = {}
+		upStationPerson = {}
+		for y in range(len(trainValues[1])):
+			if 'ZD' in trainValues[1][y]:
+				upStationTime[trainValues[1][y]] = offTimeList[y]
+				upStationPerson[trainValues[1][y]] = onPersonList[y]
+
+		for z in range(len(trainValues)):
+			if '上车人数合计' in trainValues[z][0]:
+				results.append([trainNumber, time, trainValues[z-1][1], '', '', trainValues[z-1][2 + len(upStationTime)], trainValues[z-1][0]])
+				break
+			if z > 2:
+				#print(trainValues[z])
+				# 站点
+				stationNumber = trainValues[z][0]
+				# 下站时间
+				offTime = trainValues[z][1]
+				if stationNumber not in upStationTime.keys():
+					# TODO 记录日志，标出该数据有问题
+					continue
+				# 上车时间
+				upTime = upStationTime[stationNumber]
+				# 上车人数
+				upPerson = upStationPerson[stationNumber]
+				# 下车人数
+				offPerson = trainValues[z][2 + len(upStationTime)]
+
+				results.append([trainNumber, time, offTime, upTime, upPerson, offPerson, stationNumber])
+	return results
+
+
+def write_file(values):
+	""" 写入整合好的数据到文件 """
+
+	write = xlwt.Workbook()
+	write_sheet = write.add_sheet('data', cell_overwrite_ok=True)
+
+	for i in range(len(values)):
+		write_sheet.write(i + 1, 0, values[i][0])
+		write_sheet.write(i + 1, 1, values[i][1])
+		write_sheet.write(i + 1, 2, values[i][2])
+		write_sheet.write(i + 1, 3, values[i][3])
+		write_sheet.write(i + 1, 4, values[i][4])
+		write_sheet.write(i + 1, 5, values[i][5])
+		write_sheet.write(i + 1, 6, values[i][6])
+	write.save('data.xls')
+
 
 if __name__ == '__main__':
 	time, values = analysis_file_data('20150101.xls')
-	recomb_data(time, values)
+	results = recomb_data(time, values)
+	write_file(results)
