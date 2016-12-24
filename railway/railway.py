@@ -1,7 +1,7 @@
 """
 读取列车运行数据并整合
 车次|运行时间|下车时间|上车时间|上车人数|下车人数|站点
-@author panchao
+@author Panchao
 """
 
 import xlrd
@@ -38,8 +38,6 @@ def analysis_file_data(file):
 	sheet = data.sheet_by_name(u'Sheet1')
 	# 总行数
 	rowNumbers = sheet.nrows
-	# 总列数
-	colNumbers = sheet.ncols
 
 	values = []
 	data = []
@@ -68,12 +66,6 @@ def recomb_data(runTime, values):
 		trainInfo = trainValues[0][0].split()
 		# 车次
 		trainNumber = trainInfo[0]
-		# 车站范围
-		train_range = trainInfo[1]
-		# 日均定员
-		person_average = trainInfo[6]
-		# 客座率
-		plf = trainInfo[-2]
 		# 上车人数集合
 		onPersonList = trainValues[-1]
 		# 下车时间集合
@@ -92,7 +84,6 @@ def recomb_data(runTime, values):
 				results.append([trainNumber, time, trainValues[z-1][1], '', '', trainValues[z-1][2 + len(upStationTime)], trainValues[z-1][0]])
 				break
 			if z > 2:
-				#print(trainValues[z])
 				# 站点
 				stationNumber = trainValues[z][0]
 
@@ -122,6 +113,13 @@ def write_file(values, file='data.xls', startRow=0):
 	write = copy(old_data)
 	write_sheet = write.get_sheet(0)
 
+	# 列标题
+	row_title = ['车次', '运行时间', '下车时间', '上车时间', '上车人数', '下车人数', '站点']
+
+	if startRow is 0:
+		for x in range(len(row_title)):
+			write_sheet.write(0, x, row_title[x])
+
 	for i in range(len(values)):
 		write_sheet.write(startRow + i + 1, 0, values[i][0])
 		write_sheet.write(startRow + i + 1, 1, values[i][1])
@@ -139,9 +137,14 @@ if __name__ == '__main__':
 	save_file = 'data.xls'
 	rowCounts = 0
 
+	print('Run start, good luck!\r\n')
+
 	if not os.path.isfile(save_file):
-		exit('sorry not found '+save_file+' file, please create')
-	print('Start, good luck!\r\n')
+		print('not found ' + save_file + ' file, is helping you create')
+		write = xlwt.Workbook()
+		write_sheet = write.add_sheet('data', cell_overwrite_ok=True)
+		write.save(save_file)
+		print('create file ' + save_file + ' success!')
 
 	files = each_file(data_dir)
 	for i in range(len(files)):
@@ -153,4 +156,4 @@ if __name__ == '__main__':
 		write_file(results, save_file, rowCounts)
 		print('writing finished, total ', len(results))
 
-	print('\r\nEnd, congratulation!')
+	print('\r\nRun end, congratulation!')
