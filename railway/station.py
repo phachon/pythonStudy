@@ -4,10 +4,14 @@
 @author Panchao
 """
 
+import os
 import xlrd
 import xlwt
-import os
+from railway.logger import Logger
 from xlutils.copy import copy
+
+runLog = Logger('logs/run.log')
+errorLog = Logger('logs/error.log')
 
 
 def each_file(filePath):
@@ -56,7 +60,7 @@ def analysis_file_data(file):
 	return runTime, values
 
 
-def recomb_data(runTime, values):
+def recomb_data(time, values):
 	""" 解析数据重新组合 """
 
 	results = []
@@ -81,14 +85,16 @@ def recomb_data(runTime, values):
 
 		for z in range(len(trainValues)):
 			if '上车人数合计' in trainValues[z][0]:
-				results.append([trainNumber, time, trainValues[z-1][1], '', '', trainValues[z-1][2 + len(upStationTime)], trainValues[z-1][0]])
+				results.append([trainNumber, time, trainValues[z-1][1], trainValues[z-1][1], 0, trainValues[z-1][2 + len(upStationTime)], trainValues[z-1][0]])
 				break
 			if z > 2:
 				# 站点
 				stationNumber = trainValues[z][0]
 
 				if stationNumber not in upStationTime.keys():
-					# TODO 记录日志，标出该数据有问题
+					# 记录日志，标出该数据有问题
+					if '上车人数合计' not in trainValues[z+1][0]:
+						errorLog.error('运行时间 ' + time + ' 车次 ' + trainNumber + ' 站点 ' + stationNumber + ' 数据有误')
 					continue
 				# 上车时间
 				upTime = upStationTime[stationNumber]
@@ -133,27 +139,27 @@ def write_file(values, file='data.xls', startRow=0):
 
 if __name__ == '__main__':
 
-	data_dir = '2015/01'
+	data_dir = 'data'
 	save_file = 'data.xls'
 	rowCounts = 0
 
-	print('Run start, good luck!\r\n')
+	runLog.info('Run station start, good luck!')
 
 	if not os.path.isfile(save_file):
-		print('not found ' + save_file + ' file, is helping you create')
+		runLog.info('not found ' + save_file + ' file, is helping you create')
 		write = xlwt.Workbook()
 		write_sheet = write.add_sheet('data', cell_overwrite_ok=True)
 		write.save(save_file)
-		print('create file ' + save_file + ' success!')
+		runLog.info('create file ' + save_file + ' success!')
 
 	files = each_file(data_dir)
 	for i in range(len(files)):
-		print('reading file ' + files[i] + '....')
+		runLog.info('reading file ' + files[i] + '....')
 		time, values = analysis_file_data(files[i])
 		results = recomb_data(time, values)
 		if i > 0:
 			rowCounts = len(results)
 		write_file(results, save_file, rowCounts)
-		print('writing finished, total ', len(results))
+		runLog.info('writing finished, total ' + str(len(results)))
 
-	print('\r\nRun end, congratulation!')
+	runLog.info('Run station end, congratulation!')

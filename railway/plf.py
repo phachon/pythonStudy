@@ -7,7 +7,11 @@
 import xlrd
 import xlwt
 import os
+from railway.logger import Logger
 from xlutils.copy import copy
+
+runLog = Logger('logs/run.log')
+errorLog = Logger('logs/error.log')
 
 
 def each_file(filePath):
@@ -48,6 +52,9 @@ def read_data(file):
 				trainInfo = rowValue[0].split()
 				# 车次
 				trainNumber = trainInfo[0]
+				if len(trainInfo) != 10:
+					errorLog.error('运行时间 ' + runTime + ' 车次 ' + trainNumber + ' 客座率数据有误')
+					continue
 				# 车站范围
 				train_range = trainInfo[1].split('—')
 				# 始发站
@@ -92,27 +99,26 @@ def write_file(values, file='plf.xls', startRow=0):
 
 if __name__ == '__main__':
 
-	data_dir = '2015/01'
+	data_dir = 'data'
 	save_file = 'plf.xls'
 	rowCounts = 0
 
-	print('Run start, good luck!\r\n')
+	runLog.info('Run plf start, good luck!')
 
 	if not os.path.isfile(save_file):
-		print('not found ' + save_file + ' file, is helping you create')
+		runLog.info('not found ' + save_file + ' file, is helping you create')
 		write = xlwt.Workbook()
 		write_sheet = write.add_sheet('data', cell_overwrite_ok=True)
 		write.save(save_file)
-		print('create file ' + save_file + ' success!')
-		print('\r\n')
+		runLog.info('create file ' + save_file + ' success!')
 
 	files = each_file(data_dir)
 	for i in range(len(files)):
-		print('reading file ' + files[i] + '....')
+		runLog.info('reading file ' + files[i] + '....')
 		results = read_data(files[i])
 		if i > 0:
 			rowCounts = len(results)
 		write_file(results, save_file, rowCounts)
-		print('writing finished, total ', len(results))
+		runLog.info('writing finished, total ' + str(len(results)))
 
-	print('\r\nRun end, congratulation!')
+	runLog.info('Run plf end, congratulation!')
