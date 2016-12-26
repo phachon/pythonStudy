@@ -18,7 +18,8 @@ pip install xlrd xlwt xlutils
 
 ## 脚本运行
 
-将数据文件放到 data 目录下，或者修改 plf.py station.py 的 data 变量指定具体目录
+将数据文件放到 data 目录下，或者修改 plf.py station.py 的 data_dir 变量指定具体目录
+save_dir 变量指定保存的 excel 文件名
 
 - 站点信息整合
 ```
