@@ -139,8 +139,8 @@ def write_file(values, file='data.xls', startRow=0):
 
 if __name__ == '__main__':
 
-	data_dir = 'data'
-	save_file = 'data.xls'
+	data_dir = 'data/201501-12/12'
+	save_file = 'data201512.xls'
 	rowCounts = 0
 
 	runLog.info('Run station start, good luck!')
@@ -158,7 +158,7 @@ if __name__ == '__main__':
 		time, values = analysis_file_data(files[i])
 		results = recomb_data(time, values)
 		if i > 0:
-			rowCounts = len(results)
+			rowCounts += len(results)
 		write_file(results, save_file, rowCounts)
 		runLog.info('writing finished, total ' + str(len(results)))
 

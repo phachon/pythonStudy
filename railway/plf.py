@@ -7,6 +7,7 @@
 import xlrd
 import xlwt
 import os
+import time
 from railway.logger import Logger
 from xlutils.copy import copy
 
@@ -99,7 +100,7 @@ def write_file(values, file='plf.xls', startRow=0):
 
 if __name__ == '__main__':
 
-	data_dir = 'data'
+	data_dir = 'data/201501-12'
 	save_file = 'plf.xls'
 	rowCounts = 0
 
@@ -117,7 +118,8 @@ if __name__ == '__main__':
 		runLog.info('reading file ' + files[i] + '....')
 		results = read_data(files[i])
 		if i > 0:
-			rowCounts = len(results)
+			rowCounts += len(results)
+		print(rowCounts)
 		write_file(results, save_file, rowCounts)
 		runLog.info('writing finished, total ' + str(len(results)))
 
