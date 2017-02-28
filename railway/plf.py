@@ -100,7 +100,7 @@ def write_file(values, file='plf.xls', startRow=0):
 
 if __name__ == '__main__':
 
-	data_dir = 'data/201501-12'
+	data_dir = 'data/201601-03'
 	save_file = 'plf.xls'
 	rowCounts = 0
 
