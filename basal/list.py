@@ -31,3 +31,7 @@ print(post)
 #替换
 post[0] = '技术产品部'
 print(post)
+
+# key 是否存在
+if 'a' in classmethod:
+	print('存在')
