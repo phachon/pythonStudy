@@ -1,0 +1,19 @@
+{
+	"port":"8088",
+
+	"database": {
+		"host": "127.0.0.1",
+		"port": "3306",
+		"username": "root",
+		"password": "123456",
+		"database": "pwq",
+		"charset": "utf8"
+	},
+
+	"redis": {
+		"host": "127.0.0.1",
+		"port": "9307",
+		"username": "",
+		"password":""
+	}
+}

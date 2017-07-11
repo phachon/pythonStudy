@@ -1,4 +1,28 @@
-<nav class="navbar navbar-inverse navbar-fixed-top">
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    {% if title %}
+    <title>{{title}} - microblog</title>
+    {% else %}
+    <title>microblog</title>
+    {% endif %}
+      <!-- Bootstrap core CSS -->
+    <link href="static/css/bootstrap.css" rel="stylesheet">
+    <link href="static/css/style.css" rel="stylesheet">
+    <script src="static/js/plugins/jquery.min.js"></script>
+    <script src="static/js/plugins/bootstrap.min.js"></script>
+
+    <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+  <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -7,14 +31,26 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">PMQ服务</a>
+      <a class="navbar-brand" href="#">PWQ服务</a>
     </div>
-    <div id="navbar" class="collapse navbar-collapse">
-      <ul class="nav navbar-nav">
+    <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
         <li class="active"><a href="#">首页</a></li>
-        <li><a href="#service">服务</a></li>
+        <li><a href="#about">服务</a></li>
         <li><a href="#contact">关于</a></li>
       </ul>
-    </div>
+      <!--<form class="navbar-form navbar-right">-->
+        <!--<div class="form-group">-->
+          <!--<input type="text" placeholder="Email" class="form-control">-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+          <!--<input type="password" placeholder="Password" class="form-control">-->
+        <!--</div>-->
+        <!--<button type="submit" class="btn btn-success">Sign in</button>-->
+      <!--</form>-->
+    </div><!--/.navbar-collapse -->
   </div>
 </nav>
+    {% block content %}{% endblock %}
+  </body>
+</html>
