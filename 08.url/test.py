@@ -1,11 +1,16 @@
 """
-urllib 的例子
+urllib parse url
 """
-import urllib.request
+from urllib import parse
 
-fp = urllib.request.urlopen('http://www.baidu.com')
-myBytes = fp.read()
+url = ""
 
-myStr = myBytes.decode("utf8")
-fp.close()
-print(myStr)
+parseResult = parse.urlparse(url)
+param_dict = parse.parse_qs(parseResult.query)
+
+print(param_dict)
+
+for key in param_dict:
+	print(key)
+	print(param_dict[key])
+	# print(value)

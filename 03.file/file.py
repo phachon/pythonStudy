@@ -1,12 +1,5 @@
 #f = open('test.txt', 'w');
 
-# f.write('张纯露是个煤绿\n');
-# f.write('张纯露是个煤绿\n');
-# f.write('张纯露是个煤绿\n');
-# f.write('张纯露是个煤绿\n');
-# f.write('张纯露是个煤绿\n');
-# f.write('张纯露是个煤绿\n');
-
 #只读，必须存在
 f = open('test.txt', 'r');
 #只写，不存在则创建
